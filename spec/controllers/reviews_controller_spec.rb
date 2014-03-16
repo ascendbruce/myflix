@@ -11,11 +11,11 @@ describe ReviewsController do
       end
 
       it "does not create review" do
-        Review.last.should_not == review
+        expect(Review.last).not_to eq(review)
       end
 
       it "redirects back to sign_in_path" do
-        response.should redirect_to(sign_in_path)
+        expect(response).to redirect_to(sign_in_path)
       end
 
     end
@@ -33,12 +33,12 @@ describe ReviewsController do
         end
 
         it "creates reveiw" do
-          assigns(:new_review).errors.to_a.should be_empty
-          Review.last.should == review
+          expect(assigns(:new_review).errors.to_a).to  be_empty
+          expect(Review.last).to eq(review)
         end
 
         it "redirect back to video show page" do
-          response.should redirect_to(video_path(review.video.id))
+          expect(response).to redirect_to(video_path(review.video.id))
         end
       end
 
@@ -49,12 +49,12 @@ describe ReviewsController do
         end
 
         it "does not create reveiw" do
-          assigns(:new_review).errors.to_a.should be_present
-          Review.last.should be_nil
+          expect(assigns(:new_review).errors.to_a).to be_present
+          expect(Review.last).to be_nil
         end
 
         it "renders video show page" do
-          response.should render_template("videos/show")
+          expect(response).to render_template("videos/show")
         end
       end
 

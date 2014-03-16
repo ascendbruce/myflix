@@ -7,11 +7,11 @@ describe UsersController do
     end
 
     it "returns http success" do
-      response.should be_success
+      expect(response).to be_success
     end
 
     it "sets the @user" do
-      assigns(:user).should be_instance_of(User)
+      expect(assigns(:user)).to be_instance_of(User)
     end
   end
 
@@ -32,12 +32,12 @@ describe UsersController do
       end
 
       it "renders 'new' template" do
-        response.should render_template(:new)
+        expect(response).to render_template(:new)
       end
 
       it "does not create user" do
-        User.count.should == 1
-        User.first.should == user
+        expect(User.count).to eq(1)
+        expect(User.first).to eq(user)
       end
     end
 
@@ -53,11 +53,11 @@ describe UsersController do
       end
 
       it "renders 'new' template" do
-        response.should render_template(:new)
+        expect(response).to render_template(:new)
       end
 
       it "does not create user" do
-        User.count.should be_zero
+        expect(User.count).to be_zero
       end
     end
 
@@ -78,7 +78,7 @@ describe UsersController do
 
       it "redirect to sign in page" do
         post_user
-        response.should redirect_to(sign_in_path)
+        expect(response).to redirect_to(sign_in_path)
       end
     end
   end
