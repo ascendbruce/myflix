@@ -12,6 +12,8 @@ Myflix::Application.routes.draw do
   resources :users,      :only => [:new, :create]
   resources :sessions,   :only => [:create]
 
+  get "my_queue" => "pages#my_queue"
+
   get "register"  => "users#new"
   get "sign_in"   => "sessions#new"
   get "sign_out" => "sessions#destroy"

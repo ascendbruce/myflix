@@ -9,4 +9,11 @@ describe PagesController do
     end
   end
 
+  describe "GET 'my_queue'" do
+    it "renders my_queue template" do
+      get 'my_queue'
+      expect(response).to render_template(:my_queue)
+    end
+  end
+
 end
