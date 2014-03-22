@@ -2,6 +2,7 @@ class Video < ActiveRecord::Base
   belongs_to :category
   has_many :reviews, -> { order "created_at DESC" }
   has_many :queue_items
+  has_many :users, through: :queue_items
 
   default_scope { order("created_at") }
 
