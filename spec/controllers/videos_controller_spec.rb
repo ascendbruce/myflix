@@ -82,14 +82,11 @@ describe VideosController do
     end
 
     context "by an authenticated user" do
-      let(:user)   { Fabricate.build(:user) }
-      let(:video)  { Fabricate.build(:video) }
-      let(:review) { Fabricate.build(:review,     video: video, user: user, rating: 5) }
+      let!(:user)   { Fabricate(:user) }
+      let!(:video)  { Fabricate(:video) }
+      let!(:review) { Fabricate(:review,     video: video, user: user, rating: 5) }
 
       before do
-        user.save
-        video.save
-        review.save
 
         session[:user_id] = user.id
       end
