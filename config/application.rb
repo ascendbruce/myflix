@@ -15,5 +15,16 @@ module Myflix
       g.orm :active_record
       g.template_engine :haml
     end
+
+    console do
+      require "pry"
+      config.console = Pry
+      unless defined? Pry::ExtendCommandBundle
+        Pry::ExtendCommandBundle = Module.new
+      end
+      require "rails/console/app"
+      require "rails/console/helpers"
+      TOPLEVEL_BINDING.eval('self').extend ::Rails::ConsoleMethods
+    end
   end
 end
