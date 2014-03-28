@@ -9,7 +9,10 @@ Myflix::Application.routes.draw do
     post "add_to_my_queue", on: :collection
   end
 
-  resources :queue_items, :only => [:destroy]
+  resources :queue_items, :only => [:destroy] do
+    put "update_my_queue", on: :collection
+  end
+
   resources :categories, :only => [:show]
   resources :users,      :only => [:new, :create]
   resources :sessions,   :only => [:create]
