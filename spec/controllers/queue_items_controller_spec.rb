@@ -22,6 +22,11 @@ describe QueueItemsController do
         expect(user.queue_items).to eq([monk, futurama, south_park])
       end
 
+      it "does not raise exception even if position is not numeric" do
+        put "update_my_queue", position: { monk.id => "A", south_park.id => "C", futurama.id => "B" }
+        expect(response).to redirect_to(my_queue_path)
+      end
+
       it "does not save queue_item which is not own by the user" do
         another_uesr = Fabricate(:user)
         family_guy   = Fabricate(:queue_item, user: another_uesr, video: Fabricate(:video, title: "Family Guy"), position: 3)
