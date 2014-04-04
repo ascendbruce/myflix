@@ -10,7 +10,7 @@ describe SessionsController do
     end
 
     it "redirects to home_path if already signed in" do
-      session[:user_id] = user.id
+      sign_in_user(user)
       get "new"
       expect(response).to redirect_to home_path
     end

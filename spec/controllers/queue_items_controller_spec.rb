@@ -13,14 +13,12 @@ describe QueueItemsController do
       let!(:futurama)   { Fabricate(:queue_item, user: user, video: Fabricate(:video, title: "Futurama")) }
       let!(:monk_review) { Fabricate(:review, user: user, video: monk.video, rating: 1) }
 
-      before do
-        session[:user_id] = user.id
-      end
+      before { sign_in_user(user) }
 
       context "position" do
         it "saves the specified order" do
           put "update_my_queue", position: { monk.id => "1", south_park.id => "3", futurama.id => "2" }, rating: { monk.id => nil, south_park.id => nil, futurama.id => nil }
-          expect(user.queue_items).to eq([monk, futurama, south_park])
+          expect(current_user.queue_items).to eq([monk, futurama, south_park])
         end
 
         it "does not raise exception even if position is not numeric" do
@@ -50,7 +48,7 @@ describe QueueItemsController do
           put "update_my_queue", position: { south_park.id => "1" }, rating: { south_park.id => "5" }
           south_park_review = Review.last
           expect(south_park_review.video).to  eq(south_park.video)
-          expect(south_park_review.user).to   eq(user)
+          expect(south_park_review.user).to   eq(current_user)
           expect(south_park_review.rating).to eq(5)
         end
 
@@ -82,9 +80,7 @@ describe QueueItemsController do
     end
 
     context "with authenticated user" do
-      before do
-        session[:user_id] = user.id
-      end
+      before { sign_in_user(user) }
 
       it "deletes the queue item" do
         delete "destroy", id: queue_item.id
