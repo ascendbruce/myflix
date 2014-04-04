@@ -10,11 +10,8 @@ describe PagesController do
   end
 
   describe "GET 'my_queue'" do
-    context "without sign in" do
-      it "redirect to sign_in_path" do
-        get "my_queue"
-        expect(response).to redirect_to(sign_in_path)
-      end
+    it_behaves_like "require_signed_in" do
+      let(:action) { get 'my_queue' }
     end
 
     context "signed in" do

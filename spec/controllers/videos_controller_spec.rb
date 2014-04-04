@@ -76,9 +76,8 @@ describe VideosController do
   end
 
   context "POST 'add_to_my_queue'" do
-    it "redirects to sign_in_path if not signed in" do
-      post "add_to_my_queue"
-      expect(response).to redirect_to(sign_in_path)
+    it_behaves_like "require_signed_in" do
+      let(:action) { post "add_to_my_queue" }
     end
 
     context "by an authenticated user" do

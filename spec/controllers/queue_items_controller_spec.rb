@@ -2,9 +2,8 @@ require 'spec_helper'
 
 describe QueueItemsController do
   describe "PUT 'update_my_queue'" do
-    it "redirects to sign_in_path if not logged in" do
-      put "update_my_queue"
-      expect(response).to redirect_to(sign_in_path)
+    it_behaves_like "require_signed_in" do
+      let(:action) { put "update_my_queue" }
     end
 
     context "with authenticated user" do
@@ -78,9 +77,8 @@ describe QueueItemsController do
     let!(:user)       { Fabricate(:user) }
     let!(:queue_item) { Fabricate(:queue_item, user: user) }
 
-    it "redirects to sign_in_path for unauthenticated users" do
-      delete "destroy", id: queue_item.id
-      expect(response).to redirect_to(sign_in_path)
+    it_behaves_like "require_signed_in" do
+      let(:action) { delete "destroy", id: queue_item.id }
     end
 
     context "with authenticated user" do
