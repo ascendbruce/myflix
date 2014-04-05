@@ -18,4 +18,17 @@ describe User do
       expect(user.queue_items_update_position_by([])).to be_nil
     end
   end
+
+  context "queued_video?" do
+    it "reutrns true if the user did queue the video" do
+      monk = Fabricate(:video, title: "Monk")
+      Fabricate(:queue_item, user: user, video: monk)
+      expect(user.queued_video?(monk)).to be_true
+    end
+
+    it "return false if the user did not queue the video" do
+      south_park = Fabricate(:video, title: "South Park")
+      expect(user.queued_video?(south_park)).to be_false
+    end
+  end
 end

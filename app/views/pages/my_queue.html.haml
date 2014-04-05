@@ -20,7 +20,7 @@
                   %td
                     = text_field_tag "position[#{queue_item.id}]", queue_item.position, class: "form-control"
                   %td
-                    = link_to queue_item.video.title
+                    = link_to queue_item.video.title, video_path(queue_item.video)
                   %td
                     = button_to "Play", nil, class: "btn btn-default"
                   %td

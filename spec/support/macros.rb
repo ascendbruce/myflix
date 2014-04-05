@@ -9,3 +9,18 @@ end
 def clear_current_user
   session[:user_id] = nil
 end
+
+def sign_in(user = Fabricate(:user))
+  visit sign_in_path
+
+  within("form.sign_in") do
+    fill_in "email",    with: user.email
+    fill_in "password", with: user.password
+  end
+
+  click_button "Sign in"
+end
+
+def find_video_link(video)
+  find("a[href='/videos/#{video.id}']")
+end
