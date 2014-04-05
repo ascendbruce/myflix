@@ -24,7 +24,7 @@ describe VideosController do
 
     context "signed in" do
       before(:each) do
-        sign_in_user
+        set_current_user
         get "show", id: video.id
       end
 
@@ -61,7 +61,7 @@ describe VideosController do
 
     context "signing in" do
       before(:each) do
-        sign_in_user
+        set_current_user
         get "search", q: video.title
       end
 
@@ -85,7 +85,7 @@ describe VideosController do
       let!(:video)  { Fabricate(:video) }
       let!(:review) { Fabricate(:review, video: video, user: user, rating: 5) }
 
-      before { sign_in_user(user) }
+      before { set_current_user(user) }
 
       it "creates a queue_item" do
         expect do

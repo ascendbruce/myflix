@@ -16,7 +16,7 @@ describe PagesController do
 
     context "signed in" do
       before do
-        sign_in_user
+        set_current_user
         get 'my_queue'
       end
 

@@ -13,7 +13,7 @@ describe QueueItemsController do
       let!(:futurama)   { Fabricate(:queue_item, user: user, video: Fabricate(:video, title: "Futurama")) }
       let!(:monk_review) { Fabricate(:review, user: user, video: monk.video, rating: 1) }
 
-      before { sign_in_user(user) }
+      before { set_current_user(user) }
 
       context "position" do
         it "saves the specified order" do
@@ -80,7 +80,7 @@ describe QueueItemsController do
     end
 
     context "with authenticated user" do
-      before { sign_in_user(user) }
+      before { set_current_user(user) }
 
       it "deletes the queue item" do
         delete "destroy", id: queue_item.id
