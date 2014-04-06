@@ -23,6 +23,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'pry-byebug'
   gem 'rspec-rails'
   gem "fuubar"
   gem 'spring-commands-rspec'

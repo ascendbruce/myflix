@@ -7,10 +7,10 @@ describe QueueItemsController do
     end
 
     context "with authenticated user" do
-      let!(:user)       { Fabricate(:user) }
-      let!(:monk)       { Fabricate(:queue_item, user: user, video: Fabricate(:video, title: "Monk")) }
-      let!(:south_park) { Fabricate(:queue_item, user: user, video: Fabricate(:video, title: "South Park")) }
-      let!(:futurama)   { Fabricate(:queue_item, user: user, video: Fabricate(:video, title: "Futurama")) }
+      let!(:user)        { Fabricate(:user) }
+      let!(:monk)        { Fabricate(:queue_item, user: user, video: Fabricate(:video, title: "Monk")) }
+      let!(:south_park)  { Fabricate(:queue_item, user: user, video: Fabricate(:video, title: "South Park")) }
+      let!(:futurama)    { Fabricate(:queue_item, user: user, video: Fabricate(:video, title: "Futurama")) }
       let!(:monk_review) { Fabricate(:review, user: user, video: monk.video, rating: 1) }
 
       before { set_current_user(user) }
