@@ -82,4 +82,25 @@ describe UsersController do
       end
     end
   end
+
+  describe "GET 'show'" do
+    let!(:user) { Fabricate(:user) }
+
+    it_behaves_like "require_signed_in" do
+      let(:action) { get "show", id: user.id }
+    end
+
+    before do
+      set_current_user(user)
+      get "show", id: user.id
+    end
+
+    it "sets @user" do
+      expect(assigns(:user)).to eq(user)
+    end
+
+    it "renders 'show' template" do
+      expect(response).to render_template :show
+    end
+  end
 end

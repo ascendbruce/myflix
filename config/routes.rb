@@ -14,7 +14,8 @@ Myflix::Application.routes.draw do
   end
 
   resources :categories, :only => [:show]
-  resources :users,      :only => [:new, :create]
+  resources :users,      :only => [:new, :create, :show]
+
   resources :sessions,   :only => [:create]
 
   get "my_queue", to: "pages#my_queue", as: "my_queue"
