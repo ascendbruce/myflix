@@ -1,15 +1,14 @@
 require "spec_helper"
 
 feature "My Queue" do
-  given!(:user) { Fabricate(:user) }
-
-  given!(:category) { Fabricate(:category) }
-
-  given!(:monk)       { Fabricate(:video, category: category, title: "Monk",       description: "Monk") }
-  given!(:south_park) { Fabricate(:video, category: category, title: "South Park", description: "South Park") }
-  given!(:futurama)   { Fabricate(:video, category: category, title: "Futurama",   description: "Futurama") }
 
   scenario "User can add, reorder videos in the queue" do
+    user       = Fabricate(:user)
+    category   = Fabricate(:category)
+    monk       = Fabricate(:video, category: category, title: "Monk",       description: "Monk")
+    south_park = Fabricate(:video, category: category, title: "South Park", description: "South Park")
+    futurama   = Fabricate(:video, category: category, title: "Futurama",   description: "Futurama")
+
     # login
     sign_in(user)
 
