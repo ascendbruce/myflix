@@ -24,7 +24,7 @@ describe VideosController do
 
     context "signed in" do
       before(:each) do
-        session[:user_id] = Fabricate(:user)
+        set_current_user
         get "show", id: video.id
       end
 
@@ -61,7 +61,7 @@ describe VideosController do
 
     context "signing in" do
       before(:each) do
-        session[:user_id] = Fabricate(:user).id
+        set_current_user
         get "search", q: video.title
       end
 
@@ -76,20 +76,16 @@ describe VideosController do
   end
 
   context "POST 'add_to_my_queue'" do
-    it "redirects to sign_in_path if not signed in" do
-      post "add_to_my_queue"
-      expect(response).to redirect_to(sign_in_path)
+    it_behaves_like "require_signed_in" do
+      let(:action) { post "add_to_my_queue" }
     end
 
     context "by an authenticated user" do
       let!(:user)   { Fabricate(:user) }
       let!(:video)  { Fabricate(:video) }
-      let!(:review) { Fabricate(:review,     video: video, user: user, rating: 5) }
+      let!(:review) { Fabricate(:review, video: video, user: user, rating: 5) }
 
-      before do
-
-        session[:user_id] = user.id
-      end
+      before { set_current_user(user) }
 
       it "creates a queue_item" do
         expect do

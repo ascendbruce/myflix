@@ -28,4 +28,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def queued_video?(video)
+    # without `reorder("id")` here will cause following error:
+    #   ActiveRecord::StatementInvalid: SQLite3::SQLException: ambiguous column name: created_at: SELECT  1 AS one FROM "videos" INNER JOIN "queue_items" ON "videos"."id" = "queue_items"."video_id" WHERE "queue_items"."user_id" = ? AND "videos"."id" = 1  ORDER BY created_at LIMIT 1
+    videos.where( videos: { id: video.id } ).reorder("id").exists?
+  end
+
 end

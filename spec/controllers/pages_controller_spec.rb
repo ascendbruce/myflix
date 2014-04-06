@@ -10,18 +10,13 @@ describe PagesController do
   end
 
   describe "GET 'my_queue'" do
-    context "without sign in" do
-      it "redirect to sign_in_path" do
-        get "my_queue"
-        expect(response).to redirect_to(sign_in_path)
-      end
+    it_behaves_like "require_signed_in" do
+      let(:action) { get 'my_queue' }
     end
 
     context "signed in" do
-      let(:user) { Fabricate(:user) }
-
       before do
-        session[:user_id] = user.id
+        set_current_user
         get 'my_queue'
       end
 
@@ -30,9 +25,9 @@ describe PagesController do
       end
 
       it "sets @queue_items" do
-        queue3 = Fabricate(:queue_item, video: Fabricate(:video), user: user, position: 3)
-        queue1 = Fabricate(:queue_item, video: Fabricate(:video), user: user, position: 1)
-        queue2 = Fabricate(:queue_item, video: Fabricate(:video), user: user, position: 2)
+        queue3 = Fabricate(:queue_item, video: Fabricate(:video), user: current_user, position: 3)
+        queue1 = Fabricate(:queue_item, video: Fabricate(:video), user: current_user, position: 1)
+        queue2 = Fabricate(:queue_item, video: Fabricate(:video), user: current_user, position: 2)
 
         expect(assigns(:queue_items)).to eq([queue1, queue2, queue3])
       end

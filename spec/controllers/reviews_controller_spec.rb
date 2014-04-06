@@ -28,7 +28,7 @@ describe ReviewsController do
 
       context "with valid inputs" do
         before do
-          session[:user_id] = user.id
+          set_current_user(user)
           post :create, video_id: review.video.id, review: { rating: review.rating, comment: review.comment }
         end
 
@@ -44,7 +44,7 @@ describe ReviewsController do
 
       context "with invalid inputs" do
         before do
-          session[:user_id] = user.id
+          set_current_user(user)
           post :create, video_id: review.video.id, review: { rating: review.rating, comment: "" }
         end
 
