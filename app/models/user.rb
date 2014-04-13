@@ -37,4 +37,8 @@ class User < ActiveRecord::Base
     videos.where( videos: { id: video.id } ).reorder("id").exists?
   end
 
+  def can_follow?(another_user)
+    !(Relationship.where(follower: self, leader: another_user).exists? || self == another_user)
+  end
+
 end
