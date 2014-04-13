@@ -10,6 +10,8 @@ describe User do
 
   it { should have_many(:reviews) }
   it { should have_many(:queue_items) }
+  it { should have_many(:following_relationships) }
+  it { should have_many(:leading_relationships) }
 
   let!(:user) { Fabricate(:user) }
 

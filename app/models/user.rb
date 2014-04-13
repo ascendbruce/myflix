@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
   has_many :queue_items, -> { order "position ASC" }
   has_many :videos, through: :queue_items
 
+  has_many :following_relationships, class_name: "Relationship", foreign_key: :follower_id
+  has_many :leading_relationships,   class_name: "Relationship", foreign_key: :leader_id
+
   def queue_items_update_position_by(sorted_queue_item_ids)
     return if sorted_queue_item_ids.blank?
     sorted_queue_item_ids.each_with_index do |queue_item_id, index|
