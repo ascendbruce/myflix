@@ -41,4 +41,14 @@ class User < ActiveRecord::Base
     !(Relationship.where(follower: self, leader: another_user).exists? || self == another_user)
   end
 
+  def follow(leader)
+    return if leader == self
+    Relationship.where(follower: self, leader: leader).first_or_create
+  end
+
+  def unfollow_by_relationship_id(relationship_id)
+    relationship = following_relationships.find_by_id(relationship_id)
+    relationship.destroy if relationship
+  end
+
 end

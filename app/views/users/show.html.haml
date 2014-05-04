@@ -5,7 +5,7 @@
         %header
           = gravatar_img(@user, 40)
           %h2 #{@user.full_name}'s video collections (#{@user.videos.size})
-          = link_to "Folow", relationships_path(leader_id: @user.id), method: :post, class: "btn btn-default" if current_user.can_follow?(@user)
+          = link_to "Follow", relationships_path(leader_id: @user.id), method: :post, class: "btn btn-default" if current_user.can_follow?(@user)
         %table.table
           %thead
             %tr
