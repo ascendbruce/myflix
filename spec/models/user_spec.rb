@@ -10,6 +10,8 @@ describe User do
 
   it { should have_many(:reviews) }
   it { should have_many(:queue_items) }
+  it { should have_many(:following_relationships) }
+  it { should have_many(:leading_relationships) }
 
   let!(:user) { Fabricate(:user) }
 
@@ -29,6 +31,23 @@ describe User do
     it "return false if the user did not queue the video" do
       south_park = Fabricate(:video, title: "South Park")
       expect(user.queued_video?(south_park)).to be_false
+    end
+  end
+
+  context "can_follow?" do
+    let!(:leader) { Fabricate(:user, full_name: "Bob") }
+
+    it "returns false if the user already followed the leader" do
+      Fabricate(:relationship, follower: user, leader: leader)
+      expect(user.can_follow?(leader)).to eq(false)
+    end
+
+    it "returns false if the leader is the user himself" do
+      expect(user.can_follow?(user)).to eq(false)
+    end
+
+    it "reutrns true if the user can follow the leader" do
+      expect(user.can_follow?(leader)).to eq(true)
     end
   end
 end

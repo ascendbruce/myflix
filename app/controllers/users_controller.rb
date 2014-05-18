@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_filter :user_required!, except: [:new, :create]
+
   def new
     @user = User.new
   end
@@ -11,6 +13,10 @@ class UsersController < ApplicationController
     else
       render :new
     end
+  end
+
+  def show
+    @user = User.find(params[:id])
   end
 
   private

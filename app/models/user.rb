@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
   has_many :queue_items, -> { order "position ASC" }
   has_many :videos, through: :queue_items
 
+  has_many :following_relationships, class_name: "Relationship", foreign_key: :follower_id
+  has_many :leading_relationships,   class_name: "Relationship", foreign_key: :leader_id
+
   def queue_items_update_position_by(sorted_queue_item_ids)
     return if sorted_queue_item_ids.blank?
     sorted_queue_item_ids.each_with_index do |queue_item_id, index|
@@ -32,6 +35,20 @@ class User < ActiveRecord::Base
     # without `reorder("id")` here will cause following error:
     #   ActiveRecord::StatementInvalid: SQLite3::SQLException: ambiguous column name: created_at: SELECT  1 AS one FROM "videos" INNER JOIN "queue_items" ON "videos"."id" = "queue_items"."video_id" WHERE "queue_items"."user_id" = ? AND "videos"."id" = 1  ORDER BY created_at LIMIT 1
     videos.where( videos: { id: video.id } ).reorder("id").exists?
+  end
+
+  def can_follow?(another_user)
+    !(Relationship.where(follower: self, leader: another_user).exists? || self == another_user)
+  end
+
+  def follow(leader)
+    return if leader == self
+    Relationship.where(follower: self, leader: leader).first_or_create
+  end
+
+  def unfollow_by_relationship_id(relationship_id)
+    relationship = following_relationships.find_by_id(relationship_id)
+    relationship.destroy if relationship
   end
 
 end
