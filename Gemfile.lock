@@ -108,6 +108,8 @@ GEM
     json (1.8.1)
     launchy (2.4.2)
       addressable (~> 2.3)
+    letter_opener (1.2.0)
+      launchy (~> 2.2)
     listen (2.7.0)
       celluloid (>= 0.15.2)
       celluloid-io (>= 0.15.0)
@@ -238,6 +240,7 @@ DEPENDENCIES
   haml-rails
   jquery-rails
   launchy
+  letter_opener
   pg
   pry
   pry-byebug
