@@ -26,5 +26,12 @@ Myflix::Application.routes.draw do
   get "sign_in",  to: "sessions#new"
   get "sign_out", to: "sessions#destroy"
 
+
+  resource :forgot_password, only: [:new, :create] do
+    get :confirm, via: :member
+  end
+  resources :password_resets, only: [:show, :create]
+  get "expired_token", to: "password_resets#expired_token"
+
   get 'ui(/:action)', controller: 'ui'
 end
