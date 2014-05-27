@@ -14,12 +14,14 @@ gem "bcrypt-ruby"
 
 group :development do
   gem 'sqlite3'
-  gem 'pry'
-  gem 'pry-nav'
+  gem 'pry-rails'
+  gem 'pry-remote'
+  gem 'pry-debugger'
   gem 'thin'
   gem "better_errors"
   gem "binding_of_caller"
   gem "awesome_print"
+  gem "letter_opener"
 end
 
 group :development, :test do
@@ -45,3 +47,5 @@ group :production do
   gem 'rails_12factor'
 end
 
+# require "pry-remote"; binding.remote_pry # trigger a remote pry debugger session
+# netstat -anp tcp | grep 9876             # find the pid to kill in case that the pry-remote server crashed

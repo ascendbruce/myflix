@@ -81,6 +81,35 @@ describe UsersController do
         expect(response).to redirect_to(sign_in_path)
       end
     end
+
+    context "sending email" do
+      after(:each) { ActionMailer::Base.deliveries.clear }
+
+      let(:user) { Fabricate.build(:user) }
+
+      it "sends out email to the user with valid input" do
+        post "create", user: {
+          email:     user.email,
+          password:  user.password,
+          full_name: user.full_name
+        }
+        expect(ActionMailer::Base.deliveries.last.to).to match_array([user.email])
+      end
+
+      it "sends out email containing the user's name with valid input" do
+        post "create", user: {
+          email:     user.email,
+          password:  user.password,
+          full_name: user.full_name
+        }
+        expect(ActionMailer::Base.deliveries.last.body).to include(user.full_name)
+      end
+
+      it "does not send out email with invalid inputs" do
+        post "create", user: { email: "user.email" }
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+    end
   end
 
   describe "GET 'show'" do
