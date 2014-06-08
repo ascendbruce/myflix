@@ -22,3 +22,8 @@ guard :rspec, cmd:"spring rspec" do
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$})   { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
 end
 
+
+guard 'ctags-bundler', :src_path => ["app", "lib", "spec/support"], :arguments => '-R -f .tags' do
+  watch(/^(app|lib|spec\/support)\/.*\.rb$/)
+  watch('Gemfile.lock')
+end

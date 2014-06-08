@@ -30,6 +30,7 @@ group :development, :test do
   gem "fuubar"
   gem 'spring-commands-rspec'
   gem 'guard-rspec'
+  gem "guard-ctags-bundler"
   gem "terminal-notifier-guard"
   gem 'rb-fsevent', require: false
 end
