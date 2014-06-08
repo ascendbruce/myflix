@@ -64,6 +64,8 @@ describe UsersController do
     context "with valid input" do
       let(:user) { Fabricate.build(:user) }
 
+      after(:each) { ActionMailer::Base.deliveries.clear }
+
       def post_user
         post "create", user: {
           email:     user.email,
