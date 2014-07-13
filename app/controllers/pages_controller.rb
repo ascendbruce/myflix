@@ -8,4 +8,7 @@ class PagesController < ApplicationController
   def my_queue
     @queue_items = current_user.queue_items.includes(video: [:category, :reviews] )
   end
+
+  def expired_token
+  end
 end
