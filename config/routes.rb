@@ -12,6 +12,7 @@ Myflix::Application.routes.draw do
   resources :queue_items, :only => [:destroy] do
     put "update_my_queue", on: :collection
   end
+  resources :invitations, only: [:new, :create]
 
   resources :categories, :only => [:show]
   resources :users,      :only => [:new, :create, :show]
