@@ -15,6 +15,10 @@ describe User do
 
   let!(:user) { Fabricate(:user) }
 
+  it_behaves_like "tokenable" do
+    let(:object) { Fabricate(:user) }
+  end
+
   context "queue_items_update_position_by" do
     it "skips if pass blank argument in" do
       expect(user.queue_items_update_position_by([])).to be_nil

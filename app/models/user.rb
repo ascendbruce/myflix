@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include Tokenable
+
   validates_presence_of :email, :password, :full_name
   validates_uniqueness_of :email
 
@@ -54,9 +56,4 @@ class User < ActiveRecord::Base
     relationship = following_relationships.find_by_id(relationship_id)
     relationship.destroy if relationship
   end
-
-  def generate_token
-    self.update_attribute(:token, SecureRandom.urlsafe_base64)
-  end
-
 end
