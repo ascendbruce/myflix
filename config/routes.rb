@@ -12,6 +12,7 @@ Myflix::Application.routes.draw do
   resources :queue_items, :only => [:destroy] do
     put "update_my_queue", on: :collection
   end
+  resources :invitations, only: [:new, :create]
 
   resources :categories, :only => [:show]
   resources :users,      :only => [:new, :create, :show]
@@ -23,6 +24,7 @@ Myflix::Application.routes.draw do
   get "my_queue", to: "pages#my_queue", as: "my_queue"
 
   get "register", to: "users#new"
+  get "register/:token", to: "users#new_with_invitation_token", as: "register_with_token"
   get "sign_in",  to: "sessions#new"
   get "sign_out", to: "sessions#destroy"
 
@@ -31,7 +33,7 @@ Myflix::Application.routes.draw do
     get :confirm, via: :member
   end
   resources :password_resets, only: [:show, :create]
-  get "expired_token", to: "password_resets#expired_token"
+  get "expired_token", to: "pages#expired_token"
 
   get 'ui(/:action)', controller: 'ui'
 end

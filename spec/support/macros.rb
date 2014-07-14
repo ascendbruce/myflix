@@ -21,6 +21,10 @@ def sign_in(user = Fabricate(:user))
   click_button "Sign in"
 end
 
+def sign_out
+  visit sign_out_path
+end
+
 def find_video_link(video)
   find("a[href='/videos/#{video.id}']")
 end
