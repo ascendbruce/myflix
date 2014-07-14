@@ -13,5 +13,5 @@
         .row
           .col-sm-6
             = f.text_area :message, label: "Invitation Message", rows: 6, placeholder: "Please join this really cool site!"
-        = f.form_group html: { class: "action" } do
+        = f.form_group nil, html: { class: "action" } do
           = f.submit "Send Invitation"
