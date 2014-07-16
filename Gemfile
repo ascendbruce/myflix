@@ -12,15 +12,16 @@ gem 'jquery-rails'
 gem 'bootstrap_form', github: "bootstrap-ruby/rails-bootstrap-forms"
 gem "bcrypt-ruby"
 
+gem 'pry-rails'
+gem "awesome_print"
+
 group :development do
   gem 'sqlite3'
-  gem 'pry-rails'
   gem 'pry-remote'
   gem 'pry-debugger'
   gem 'thin'
   gem "better_errors"
   gem "binding_of_caller"
-  gem "awesome_print"
   gem "letter_opener"
 end
 
