@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include Tokenable
+
   validates_presence_of :email, :password, :full_name
   validates_uniqueness_of :email
 
@@ -38,11 +40,15 @@ class User < ActiveRecord::Base
   end
 
   def can_follow?(another_user)
-    !(Relationship.where(follower: self, leader: another_user).exists? || self == another_user)
+    !(follows?(another_user) || self == another_user)
+  end
+
+  def follows?(another_user)
+    Relationship.where(follower: self, leader: another_user).exists?
   end
 
   def follow(leader)
-    return if leader == self
+    return unless can_follow?(leader)
     Relationship.where(follower: self, leader: leader).first_or_create
   end
 
@@ -50,9 +56,4 @@ class User < ActiveRecord::Base
     relationship = following_relationships.find_by_id(relationship_id)
     relationship.destroy if relationship
   end
-
-  def generate_token
-    self.update_attribute(:token, SecureRandom.urlsafe_base64)
-  end
-
 end

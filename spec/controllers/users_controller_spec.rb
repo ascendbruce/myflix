@@ -15,6 +15,37 @@ describe UsersController do
     end
   end
 
+  describe "GET new_with_invitation_token" do
+    let!(:invitation) { Fabricate(:invitation, inviter: Fabricate(:user)) }
+    before { invitation.generate_token }
+
+    it "does not require user sign in" do
+      clear_current_user
+      get :new_with_invitation_token, token: invitation.token
+      expect(response).not_to redirect_to(sign_in_path)
+    end
+
+    it "renders :new template" do
+      get :new_with_invitation_token, token: invitation.token
+      expect(response).to render_template :new
+    end
+
+    it "sets @user with recipient's email" do
+      get :new_with_invitation_token, token: invitation.token
+      expect(assigns(:user).email).to eq(invitation.recipient_email)
+    end
+
+    it "sets @invitation_token" do
+      get :new_with_invitation_token, token: invitation.token
+      expect(assigns(:invitation_token)).to eq(invitation.token)
+    end
+
+    it "redirects to expired_token page for invalid tokens" do
+      get :new_with_invitation_token, token: "asdf"
+      expect(response).to redirect_to expired_token_path
+    end
+  end
+
   describe "POST 'create'" do
 
     context "with duplicated email" do
@@ -64,6 +95,8 @@ describe UsersController do
     context "with valid input" do
       let(:user) { Fabricate.build(:user) }
 
+      after(:each) { ActionMailer::Base.deliveries.clear }
+
       def post_user
         post "create", user: {
           email:     user.email,
@@ -79,6 +112,42 @@ describe UsersController do
       it "redirect to sign in page" do
         post_user
         expect(response).to redirect_to(sign_in_path)
+      end
+    end
+
+    context "with valid input and invitation" do
+      let!(:inviter)    { Fabricate.create(:user, email: "alice@example.com") }
+      let!(:user)       { Fabricate.build(:user,  email: "bob@example.com") }
+      let!(:invitation) { Fabricate.create(:invitation, inviter: inviter, recipient_email: user.email, recipient_name: user.full_name) }
+
+      after(:each) { ActionMailer::Base.deliveries.clear }
+
+      def post_user
+        invitation.generate_token
+        post "create", invitation_token: invitation.token, user: {
+          email:     user.email,
+          password:  user.password,
+          full_name: user.full_name,
+        }
+      end
+
+      it "makes the user follow the inviter" do
+        post_user
+        new_user = User.where(email: user.email).first
+        expect(new_user.follows?(inviter)).to be_true
+      end
+
+      it "makes the inviter follow the user" do
+        post_user
+        new_user = User.where(email: user.email).first
+        expect(inviter.follows?(new_user)).to be_true
+      end
+
+      it "expires the invitation upon acceptance" do
+        post_user
+        new_user = User.where(email: user.email).first
+        invitation.reload
+        expect(invitation.token).to be_nil
       end
     end
 

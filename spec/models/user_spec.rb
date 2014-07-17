@@ -15,6 +15,10 @@ describe User do
 
   let!(:user) { Fabricate(:user) }
 
+  it_behaves_like "tokenable" do
+    let(:object) { Fabricate(:user) }
+  end
+
   context "queue_items_update_position_by" do
     it "skips if pass blank argument in" do
       expect(user.queue_items_update_position_by([])).to be_nil
@@ -48,6 +52,21 @@ describe User do
 
     it "reutrns true if the user can follow the leader" do
       expect(user.can_follow?(leader)).to eq(true)
+    end
+  end
+
+  describe "#follow" do
+    it "follows another user" do
+      alice = Fabricate(:user)
+      bob   = Fabricate(:user)
+      alice.follow bob
+      expect(alice.follows?(bob)).to be_true
+    end
+
+    it "does not follow one self" do
+      alice = Fabricate(:user)
+      alice.follow alice
+      expect(alice.follows?(alice)).to be_false
     end
   end
 end

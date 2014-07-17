@@ -41,6 +41,7 @@ group :test do
   gem 'fabrication'
   gem 'faker'
   gem 'capybara'
+  gem 'capybara-email'
   gem 'launchy'
 end
 

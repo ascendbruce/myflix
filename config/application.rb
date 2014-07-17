@@ -16,6 +16,11 @@ module Myflix
       g.template_engine :haml
     end
 
+    config.autoload_paths += %W(
+      #{config.root}/app/controllers/concerns
+      #{config.root}/app/models/concerns
+    )
+
     console do
       require "pry"
       config.console = Pry
