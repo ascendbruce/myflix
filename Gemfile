@@ -15,6 +15,8 @@ gem "bcrypt-ruby"
 gem 'pry-rails'
 gem "awesome_print"
 
+gem "sidekiq"
+
 group :development do
   gem 'sqlite3'
   gem 'pry-remote'
