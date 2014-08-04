@@ -15,6 +15,7 @@ gem "bcrypt-ruby"
 gem 'pry-rails'
 gem "awesome_print"
 
+gem 'unicorn'
 gem "sidekiq"
 
 group :development do
