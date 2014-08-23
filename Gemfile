@@ -18,11 +18,11 @@ gem "awesome_print"
 gem 'unicorn'
 gem "sidekiq"
 gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
-gem 'paratrooper'
+# gem 'paratrooper'
 
 gem 'carrierwave'
 gem 'mini_magick'
-gem "fog"
+gem "fog", "~> 1.3.1"
 
 group :development do
   gem 'sqlite3'
