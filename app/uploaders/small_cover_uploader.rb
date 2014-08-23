@@ -6,6 +6,10 @@ class SmallCoverUploader < CarrierWave::Uploader::Base
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
 
+  def cache_dir
+    "#{Rails.root}/tmp/uploads"
+  end
+
   # Choose what kind of storage to use for this uploader:
   # storage :file
   # storage :fog
@@ -25,7 +29,7 @@ class SmallCoverUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
-  process :scale => [166, 236]
+  process :resize_to_fit => [166, 236]
 
   # def scale(width, height)
   #   # do something
