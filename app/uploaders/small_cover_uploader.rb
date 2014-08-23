@@ -25,7 +25,7 @@ class SmallCoverUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
-  process :scale => [166, 236]
+  process :resize_to_fit => [166, 236]
 
   # def scale(width, height)
   #   # do something
