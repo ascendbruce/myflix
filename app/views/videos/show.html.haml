@@ -2,14 +2,14 @@
   .container
     .row
       .video_large_cover.col-sm-7.col-sm-offset-1
-        %img{:src => @video.large_cover_path}
+        %img{:src => @video.large_cover_url}
       .video_info.col-sm-3
         %header
           %h3= @video.title
           %span Rating: #{@rating}/5.0
         %p= @video.description
         .actions
-          %a.btn.btn-primary(href="") Watch Now
+          = link_to "Watch Now", @video.video_url, class: "btn btn-primary"
           = add_to_my_queue_link unless current_user.queued_video?(@video)
 
 %section.reviews.container
