@@ -22,6 +22,18 @@ class UsersController < ApplicationController
     if @user.save
       handle_invitation
 
+      Stripe.api_key = ENV['STRIPE_SECRET_KEY']
+      begin
+        charge = Stripe::Charge.create(
+          :amount      => 999,
+          :currency    => "usd",
+          :card        => params[:stripeToken],
+          :description => "Sign up charge for #{@user.email}"
+        )
+      rescue Stripe::CardError => e
+        # The card has been declined
+      end
+
       AppMailer.delay.send_welcome_email(@user)
       redirect_to sign_in_path
     else

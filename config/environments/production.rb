@@ -9,6 +9,7 @@ Myflix::Application.configure do
 
   config.assets.compress = true
   config.assets.js_compressor = :uglifier
+  config.assets.precompile += %w(payment.js)
 
   config.assets.compile = false
 
