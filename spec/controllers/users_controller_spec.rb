@@ -55,6 +55,7 @@ describe UsersController do
       let(:user) { Fabricate(:user) }
 
       before do
+        StripeWrapper::Charge.stub(:create).and_return(true)
         post "create", user: {
           email: user.email,
           password:  Faker::Internet.password,
@@ -98,6 +99,7 @@ describe UsersController do
       after(:each) { ActionMailer::Base.deliveries.clear }
 
       def post_user
+        StripeWrapper::Charge.stub(:create).and_return(true)
         post "create", user: {
           email:     user.email,
           password:  user.password,
@@ -123,6 +125,7 @@ describe UsersController do
       after(:each) { ActionMailer::Base.deliveries.clear }
 
       def post_user
+        StripeWrapper::Charge.stub(:create).and_return(true)
         invitation.generate_token
         post "create", invitation_token: invitation.token, user: {
           email:     user.email,
@@ -157,6 +160,7 @@ describe UsersController do
       let(:user) { Fabricate.build(:user) }
 
       it "sends out email to the user with valid input" do
+        StripeWrapper::Charge.stub(:create).and_return(true)
         post "create", user: {
           email:     user.email,
           password:  user.password,
@@ -166,6 +170,7 @@ describe UsersController do
       end
 
       it "sends out email containing the user's name with valid input" do
+        StripeWrapper::Charge.stub(:create).and_return(true)
         post "create", user: {
           email:     user.email,
           password:  user.password,
