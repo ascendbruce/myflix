@@ -12,18 +12,15 @@ module StripeWrapper
     end
 
     def self.create(options = {})
-      begin
-        charge = Stripe::Charge.create(
-          :amount      => options[:amount],
-          :currency    => "usd",
-          :card        => options[:card],
-          :description => options[:description]
-        )
-        new(response: charge)
-      rescue Stripe::CardError => e
-        # The card has been declined
-        new(error_message: e.message)
-      end
+      charge = Stripe::Charge.create(
+        :amount      => options[:amount],
+        :currency    => "usd",
+        :card        => options[:card],
+        :description => options[:description]
+      )
+      new(response: charge)
+    rescue Stripe::CardError => e
+      new(error_message: e.message)
     end
   end
 end
