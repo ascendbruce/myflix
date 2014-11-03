@@ -16,7 +16,7 @@ feature "User registers" , { js: true, vcr: true } do
     fill_in_valid_user_info
     fill_in_invalid_card
     click_button "Sign Up"
-    expect(page).to have_content "Your card number is incorrect."
+    expect(page).to have_content "This card number looks invalid"
   end
 
   scenario "with valid user info and declined card" do
@@ -37,7 +37,7 @@ feature "User registers" , { js: true, vcr: true } do
     fill_in_invalid_user_info
     fill_in_invalid_card
     click_button "Sign Up"
-    expect(page).to have_content "Your card number is incorrect."
+    expect(page).to have_content "This card number looks invalid"
   end
 
   scenario "with invalid user info and declined card" do
@@ -73,7 +73,7 @@ def fill_in_valid_card
 end
 
 def fill_in_invalid_card
-  fill_in "Credit Card Number", with: "9999999999999999"
+  fill_in "Credit Card Number", with: "123"
   fill_in "Security Code",      with: "123"
   select "7 - July",            from: "date_month"
   select next_year,             from: "date_year"
