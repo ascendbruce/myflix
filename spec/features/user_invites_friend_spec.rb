@@ -9,6 +9,7 @@ feature "User invites friend" do
     invite_a_friend
     sign_out
 
+    StripeWrapper::Charge.stub(:create).and_return(double(:charge, successful?: true))
     friend_accepts_invitation_and_sign_up
     friend_sign_in
     invitee_should_follow(alice.full_name)
