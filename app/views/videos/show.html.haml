@@ -7,10 +7,7 @@
         %header
           %h3= @video.title
           %span Rating:
-          - if @reviews.any?
-            = "#{@rating}/5.0"
-          - else
-            N/A
+          = @video.rating
         %p= @video.description
         .actions
           = link_to "Watch Now", @video.video_url, class: "btn btn-primary"
