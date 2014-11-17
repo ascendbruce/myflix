@@ -24,43 +24,6 @@ describe StripeWrapper do
     ).id
   end
 
-  describe StripeWrapper::Charge do
-
-    describe ".create", :vcr do
-      it "makes a successful charge" do
-
-        response = StripeWrapper::Charge.create(
-          :amount      => 999,
-          :card        => valid_token,
-          :description => "test"
-        )
-
-        expect(response).to be_successful
-      end
-
-      it "makes a card declined charge" do
-
-        response = StripeWrapper::Charge.create(
-          :amount      => 999,
-          :card        => declined_token,
-          :description => "test"
-        )
-
-        expect(response).not_to be_successful
-      end
-
-      it "returns the error message for declined charge" do
-        response = StripeWrapper::Charge.create(
-          :amount      => 999,
-          :card        => declined_token,
-          :description => "test"
-        )
-
-        expect(response.error_message).to eq "Your card was declined."
-      end
-    end
-  end
-
   describe StripeWrapper::Customer do
     describe ".create", :vcr do
       let(:alice) { Fabricate(:user, full_name: "Alice Lee") }
