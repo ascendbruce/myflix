@@ -4,9 +4,9 @@ describe UserSignup do
   describe "#sign_up" do
     context "with valid personal info and valid card" do
       let(:user)   { Fabricate.build(:user) }
-      let(:charge) { double(:charge, successful?: true) }
+      let(:customer) { double(:customer, successful?: true) }
 
-      before { StripeWrapper::Charge.should_receive(:create).and_return(charge) }
+      before { StripeWrapper::Customer.should_receive(:create).and_return(customer) }
       after  { ActionMailer::Base.deliveries.clear }
 
       it "creates a user" do
@@ -54,9 +54,9 @@ describe UserSignup do
 
     context "with valid personal info and declined card" do
       let(:user)   { Fabricate.build(:user) }
-      let(:charge) { double(:charge, successful?: false, error_message: "Your card was declined.") }
+      let(:customer) { double(:customer, successful?: false, error_message: "Your card was declined.") }
 
-      before { StripeWrapper::Charge.should_receive(:create).and_return(charge) }
+      before { StripeWrapper::Customer.should_receive(:create).and_return(customer) }
 
       it "does not create a new user record" do
         UserSignup.new(user).sign_up("strip-token-no-need-in-doubles", nil)
@@ -66,7 +66,7 @@ describe UserSignup do
 
     context "with invalid user info" do
       let(:user)   { User.new(email: "bob@example.com") }
-      let(:charge) { double(:charge, successful?: true) }
+      let(:customer) { double(:customer, successful?: true) }
 
       it "does not create user" do
         UserSignup.new(user).sign_up("strip-token-no-need-in-doubles", nil)
@@ -74,7 +74,7 @@ describe UserSignup do
       end
 
       it "does not charge the card" do
-        StripeWrapper::Charge.should_not_receive(:create)
+        StripeWrapper::Customer.should_not_receive(:create)
         UserSignup.new(user).sign_up("strip-token-no-need-in-doubles", nil)
       end
 
