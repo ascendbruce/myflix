@@ -2,62 +2,49 @@ require 'spec_helper'
 require "stripe"
 
 describe StripeWrapper do
-  describe StripeWrapper::Charge do
-    describe ".create" do
-      it "makes a successful charge", :vcr do
-        token = Stripe::Token.create(
-          :card => {
-            :number    => "4242424242424242",
-            :exp_month => 9,
-            :exp_year  => Time.now.year+1,
-            :cvc       => "314"
-          },
-        ).id
+  let(:valid_token) do
+    Stripe::Token.create(
+      :card => {
+        :number    => "4242424242424242",
+        :exp_month => 9,
+        :exp_year  => Time.now.year+1,
+        :cvc       => "314"
+      },
+    ).id
+  end
 
-        response = StripeWrapper::Charge.create(
-          :amount      => 999,
-          :card        => token,
-          :description => "test"
-        )
+  let(:declined_token) do
+    Stripe::Token.create(
+      :card => {
+        :number    => "4000000000000002",
+        :exp_month => 9,
+        :exp_year  => Time.now.year+1,
+        :cvc       => "314"
+      },
+    ).id
+  end
 
+  describe StripeWrapper::Customer do
+    describe ".create", :vcr do
+      let(:alice) { Fabricate(:user, full_name: "Alice Lee") }
+
+      it "creates a customer with valid card" do
+        response = StripeWrapper::Customer.create(user: alice, card: valid_token)
         expect(response).to be_successful
       end
 
-      it "makes a card declined charge", :vcr do
-        token = Stripe::Token.create(
-          :card => {
-            :number    => "4000000000000002",
-            :exp_month => 9,
-            :exp_year  => Time.now.year+1,
-            :cvc       => "314"
-          },
-        ).id
+      it "returns the customer token for valid card" do
+        response = StripeWrapper::Customer.create(user: alice, card: valid_token)
+        expect(response.customer_token).to be_present
+      end
 
-        response = StripeWrapper::Charge.create(
-          :amount      => 999,
-          :card        => token,
-          :description => "test"
-        )
-
+      it "does not create a customer with declined card" do
+        response = StripeWrapper::Customer.create(user: alice, card: declined_token)
         expect(response).not_to be_successful
       end
 
-      it "returns the error message for declined charge", :vcr do
-        token = Stripe::Token.create(
-          :card => {
-            :number    => "4000000000000002",
-            :exp_month => 9,
-            :exp_year  => Time.now.year+1,
-            :cvc       => "314"
-          },
-        ).id
-
-        response = StripeWrapper::Charge.create(
-          :amount      => 999,
-          :card        => token,
-          :description => "test"
-        )
-
+      it "returns the error message for declined charge" do
+        response = StripeWrapper::Customer.create(user: alice, card: declined_token)
         expect(response.error_message).to eq "Your card was declined."
       end
     end

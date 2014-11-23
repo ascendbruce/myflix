@@ -1,5 +1,5 @@
 module StripeWrapper
-  class Charge
+  class Customer
     attr_reader :error_message, :response
 
     def initialize(options = {})
@@ -11,14 +11,17 @@ module StripeWrapper
       response.present?
     end
 
+    def customer_token
+      response.id
+    end
+
     def self.create(options = {})
-      charge = Stripe::Charge.create(
-        :amount      => options[:amount],
-        :currency    => "usd",
-        :card        => options[:card],
-        :description => options[:description]
+      response = Stripe::Customer.create(
+        card: options[:card],
+        plan: "base",
+        email: options[:user].email
       )
-      new(response: charge)
+      new(response: response)
     rescue Stripe::CardError => e
       new(error_message: e.message)
     end

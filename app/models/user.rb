@@ -56,4 +56,8 @@ class User < ActiveRecord::Base
     relationship = following_relationships.find_by_id(relationship_id)
     relationship.destroy if relationship
   end
+
+  def deactivate!
+    self.update_column(:active, false)
+  end
 end
