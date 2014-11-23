@@ -11,6 +11,10 @@ module StripeWrapper
       response.present?
     end
 
+    def customer_token
+      response.id
+    end
+
     def self.create(options = {})
       response = Stripe::Customer.create(
         card: options[:card],

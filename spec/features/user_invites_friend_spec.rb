@@ -9,7 +9,7 @@ feature "User invites friend" do
     invite_a_friend
     sign_out
 
-    StripeWrapper::Customer.stub(:create).and_return(double(:customer, successful?: true))
+    StripeWrapper::Customer.stub(:create).and_return(double(:customer, successful?: true, customer_token: "qewrasdf"))
     friend_accepts_invitation_and_sign_up
     friend_sign_in
     invitee_should_follow(alice.full_name)

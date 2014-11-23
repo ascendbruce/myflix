@@ -33,6 +33,11 @@ describe StripeWrapper do
         expect(response).to be_successful
       end
 
+      it "returns the customer token for valid card" do
+        response = StripeWrapper::Customer.create(user: alice, card: valid_token)
+        expect(response.customer_token).to be_present
+      end
+
       it "does not create a customer with declined card" do
         response = StripeWrapper::Customer.create(user: alice, card: declined_token)
         expect(response).not_to be_successful

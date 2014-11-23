@@ -1,6 +1,8 @@
 Myflix::Application.routes.draw do
   root "pages#front"
 
+  mount StripeEvent::Engine => '/stripe_events'
+
   get "home" => "videos#index"
 
   resources :videos, :only => [:index, :show] do
